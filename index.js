@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./db.js";
-import { createUser, addCredits, removeCredits  } from "./controllers/user.js";
+import { createUser, getUser, addCredits, removeCredits  } from "./controllers/user.js";
 import { getAllVideos, uploadVideo  } from "./controllers/video.js";
 import { getUserVideoRequests, generateVideo } from "./controllers/videoRequest.js";
 
@@ -23,6 +23,7 @@ connectDB();
 
 app.use(express.static("public"));
 app.post("/api/users", createUser);
+app.post("/api/users/get", getUser);
 
 app.get("/", (req, res) => {
   res.send("API Running");
