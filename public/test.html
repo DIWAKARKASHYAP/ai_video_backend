@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Video Backend Tester</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    section { margin-bottom: 40px; padding: 15px; border: 1px solid #ddd; }
+    input, button { margin: 5px 0; display: block; }
+    pre { background: #f4f4f4; padding: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>Video Backend Test Panel</h1>
+
+<!-- CREATE USER -->
+<section>
+  <h2>Create User</h2>
+  <input type="number" id="createCredits" placeholder="Credits" />
+  <button onclick="createUser()">Create User</button>
+  <pre id="createUserResult"></pre>
+</section>
+
+<!-- ADD CREDITS -->
+<section>
+  <h2>Add Credits</h2>
+  <input type="text" id="addUserId" placeholder="User ID" />
+  <input type="number" id="addAmount" placeholder="Amount" />
+  <button onclick="addCredits()">Add Credits</button>
+  <pre id="addCreditsResult"></pre>
+</section>
+
+<!-- REMOVE CREDITS -->
+<section>
+  <h2>Remove Credits</h2>
+  <input type="text" id="removeUserId" placeholder="User ID" />
+  <input type="number" id="removeAmount" placeholder="Amount" />
+  <button onclick="removeCredits()">Remove Credits</button>
+  <pre id="removeCreditsResult"></pre>
+</section>
+
+<!-- GET ALL VIDEOS -->
+<section>
+  <h2>Get All Videos</h2>
+  <button onclick="getVideos()">Fetch Videos</button>
+  <pre id="videosResult"></pre>
+</section>
+
+<!-- GET USER VIDEO REQUESTS -->
+<section>
+  <h2>Get User Video Requests</h2>
+  <input type="text" id="requestUserId" placeholder="User ID" />
+  <button onclick="getVideoRequests()">Fetch Requests</button>
+  <pre id="videoRequestsResult"></pre>
+</section>
+
+<!-- UPLOAD VIDEO -->
+<section>
+  <h2>Upload Template Video</h2>
+  <input type="text" id="videoTitle" placeholder="Title" />
+  <input type="text" id="videoDescription" placeholder="Description" />
+  <input type="text" id="videoPrompt" placeholder="Prompt" />
+  <input type="number" id="videoDuration" placeholder="Duration Seconds" />
+  <input type="file" id="videoFile" />
+  <button onclick="uploadVideo()">Upload Video</button>
+  <pre id="uploadVideoResult"></pre>
+</section>
+
+<!-- GENERATE VIDEO -->
+<section>
+  <h2>Generate Video</h2>
+  <input type="text" id="referenceId" placeholder="Reference/User ID" />
+  <input type="file" id="generateFile" />
+  <button onclick="generateVideo()">Generate</button>
+  <pre id="generateVideoResult"></pre>
+</section>
+
+<script>
+const BASE_URL = "http://localhost:5000/api";
+
+async function createUser() {
+  const credits = document.getElementById("createCredits").value;
+
+  const res = await fetch(`${BASE_URL}/users`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ credits })
+  });
+
+  document.getElementById("createUserResult").textContent =
+    JSON.stringify(await res.json(), null, 2);
+}
+
+async function addCredits() {
+  const userId = document.getElementById("addUserId").value;
+  const amount = document.getElementById("addAmount").value;
+
+  const res = await fetch(`${BASE_URL}/users/add-credits`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, amount })
+  });
+
+  document.getElementById("addCreditsResult").textContent =
+    JSON.stringify(await res.json(), null, 2);
+}
+
+async function removeCredits() {
+  const userId = document.getElementById("removeUserId").value;
+  const amount = document.getElementById("removeAmount").value;
+
+  const res = await fetch(`${BASE_URL}/users/remove-credits`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, amount })
+  });
+
+  document.getElementById("removeCreditsResult").textContent =
+    JSON.stringify(await res.json(), null, 2);
+}
+
+async function getVideos() {
+  const res = await fetch(`${BASE_URL}/videos`);
+  document.getElementById("videosResult").textContent =
+    JSON.stringify(await res.json(), null, 2);
+}
+
+async function getVideoRequests() {
+  const userId = document.getElementById("requestUserId").value;
+  const res = await fetch(`${BASE_URL}/users/${userId}/video-requests`);
+  document.getElementById("videoRequestsResult").textContent =
+    JSON.stringify(await res.json(), null, 2);
+}
+
+async function uploadVideo() {
+  const formData = new FormData();
+
+  formData.append("title", document.getElementById("videoTitle").value);
+  formData.append("description", document.getElementById("videoDescription").value);
+  formData.append("prompt", document.getElementById("videoPrompt").value);
+  formData.append("duration_seconds", document.getElementById("videoDuration").value);
+  formData.append("video", document.getElementById("videoFile").files[0]);
+
+  const res = await fetch(`${BASE_URL}/upload-video`, {
+    method: "POST",
+    body: formData
+  });
+
+  document.getElementById("uploadVideoResult").textContent =
+    JSON.stringify(await res.json(), null, 2);
+}
+
+async function generateVideo() {
+  const formData = new FormData();
+  formData.append("referenceId", document.getElementById("referenceId").value);
+  formData.append("video", document.getElementById("generateFile").files[0]);
+
+  const res = await fetch(`${BASE_URL}/generate-video`, {
+    method: "POST",
+    body: formData
+  });
+
+  document.getElementById("generateVideoResult").textContent =
+    JSON.stringify(await res.json(), null, 2);
+}
+</script>
+
+</body>
+</html>
