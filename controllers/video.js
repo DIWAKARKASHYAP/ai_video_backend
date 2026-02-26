@@ -1,8 +1,9 @@
 import { Video } from "../models.js";
 import b2, { initB2 } from "../utils/backblaze.js";
-
+import {convertUrl} from "../utils/helper.js"
 
 const BUCKET_ID = '53f26751f7a7761e96cf0014'
+const BUCKET_NAME = 'ai-video-app'
 /* =========================
    GET ALL VIDEOS
 ========================= */
@@ -126,7 +127,7 @@ export const uploadVideo = async (req, res) => {
       description,
       prompt,
       duration_seconds: duration,
-      video_url: fileUrl,
+      video_url: convertUrl(fileUrl),
       video_gif: null
     });
 

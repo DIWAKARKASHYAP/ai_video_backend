@@ -57,11 +57,14 @@
 <!-- UPLOAD VIDEO -->
 <section>
   <h2>Upload Template Video</h2>
+
+  <input type="text" id="videoHeading" placeholder="Heading" />
   <input type="text" id="videoTitle" placeholder="Title" />
   <input type="text" id="videoDescription" placeholder="Description" />
   <input type="text" id="videoPrompt" placeholder="Prompt" />
   <input type="number" id="videoDuration" placeholder="Duration Seconds" />
-  <input type="file" id="videoFile" />
+  <input type="file" id="videoFile" accept="video/*" />
+
   <button onclick="uploadVideo()">Upload Video</button>
   <pre id="uploadVideoResult"></pre>
 </section>
@@ -133,21 +136,40 @@ async function getVideoRequests() {
 }
 
 async function uploadVideo() {
+  const fileInput = document.getElementById("videoFile");
+
+  if (!fileInput.files.length) {
+    alert("Please select a video file");
+    return;
+  }
+
   const formData = new FormData();
 
+  formData.append("heading", document.getElementById("videoHeading").value);
   formData.append("title", document.getElementById("videoTitle").value);
   formData.append("description", document.getElementById("videoDescription").value);
   formData.append("prompt", document.getElementById("videoPrompt").value);
   formData.append("duration_seconds", document.getElementById("videoDuration").value);
-  formData.append("video", document.getElementById("videoFile").files[0]);
 
-  const res = await fetch(`${BASE_URL}/upload-video`, {
-    method: "POST",
-    body: formData
-  });
+  // ⚠️ IMPORTANT:
+  // Make sure this name matches multer field name in backend
+  formData.append("video", fileInput.files[0]);
 
-  document.getElementById("uploadVideoResult").textContent =
-    JSON.stringify(await res.json(), null, 2);
+  try {
+    const res = await fetch(`${BASE_URL}/upload-video`, {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    document.getElementById("uploadVideoResult").textContent =
+      JSON.stringify(data, null, 2);
+
+  } catch (error) {
+    document.getElementById("uploadVideoResult").textContent =
+      "Upload failed: " + error.message;
+  }
 }
 
 async function generateVideo() {

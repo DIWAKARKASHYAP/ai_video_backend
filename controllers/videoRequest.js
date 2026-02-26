@@ -3,6 +3,7 @@ import { VideoRequest } from "../models.js";
 import b2, { initB2 } from "../utils/backblaze.js";
 
 const BUCKET_ID = '53f26751f7a7761e96cf0014'
+const BUCKET_NAME = 'ai-video-app'
 
 
 /* =========================
@@ -70,12 +71,12 @@ export const generateVideo = async (req, res) => {
       mime: req.file.mimetype
     });
 
-    const fileUrl = `https://f000.backblazeb2.com/file/request_video/${fileName}`;
+    const fileUrl = `https://f000.backblazeb2.com/file/${BUCKET_NAME}/${fileName}`;
 
     // Save in DB
     const request = await VideoRequest.create({
       user_id: referenceId, // assuming referenceId = userId
-      video_url: fileUrl,
+      video_url: convertUrl(fileUrl),
       status: "pending"
     });
 
