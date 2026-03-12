@@ -3,13 +3,13 @@ import {VideoRequest} from "../models"
 
 
 
-const updateDataByHook = async (task_id, code) => {
+export const updateDataByHook = async (task_id, code) => {
   try {
     // get video url from API
     const videoUrl = await videoByTaskId(task_id);
 
     const updateData = {
-      status: code == 200 ? completed: failed,
+      status: code == 200 ? "completed": "failed",
     };
 
     if (videoUrl) {
