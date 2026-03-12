@@ -4,6 +4,7 @@ import connectDB from "./db.js";
 import { createUser, getUser, addCredits, removeCredits  } from "./controllers/user.js";
 import { getAllVideos, uploadVideo  } from "./controllers/video.js";
 import { getUserVideoRequests, generateVideo } from "./controllers/videoRequest.js";
+import {updateDataByHook} from "./utils/webhook.js"
 
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
@@ -38,9 +39,28 @@ app.get("/api/videos", getAllVideos);
 
 app.get("/api/users/:userId/video-requests", getUserVideoRequests);
 
-app.post("/api/generate-video", upload.single("video"), generateVideo);
+app.post("/api/generate-video", upload.single("image"), generateVideo);
 
 app.post("/api/upload-video", upload.single("video"), uploadVideo);
+
+
+// webhook
+
+app.post('/webhook-callback', (req, res) => {
+  const { code, msg, data } = req.body;
+  
+  // console.log('Received legitimate webhook request:', {
+  //   taskId: data.task_id,
+  //   status: code,
+  //   callbackType: data.callbackType
+  // });
+
+  updateDataByHook(data.task_id, code )
+  console.log(data.task_id, code , "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}")
+  // Process callback data...
+  
+  res.status(200).json({ status: 'received' });
+});
 /* ======================
    SWAGGER SETUP
 ====================== */

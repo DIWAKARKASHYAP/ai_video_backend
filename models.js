@@ -88,14 +88,24 @@ export const Video=mongoose.model("Video", videoSchema);
 const videoRequestSchema=new mongoose.Schema(
   {
     user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
+
       required: true
     },
-    video_url: {
+    target_video_id: {
       type: String,
       required: true
     },
+    image_url:{
+      type: String,
+      required: true
+    },
+    kie_task_id:{
+      type: String,
+      required: true
+
+    },
+
     status: {
       type: String,
       enum: ["pending", "processing", "completed", "failed"],
