@@ -32,7 +32,7 @@ export const kieGenerator= async (item)=>{
 
 // video form task id
 
-const videoByTaskId = async (taskId) => {
+export const videoByTaskId = async (taskId) => {
   try {
     const response = await fetch(
       `https://api.kie.ai/api/v1/jobs/recordInfo?taskId=${taskId}`,
