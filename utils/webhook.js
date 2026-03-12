@@ -1,5 +1,5 @@
-import {videoByTaskId} from "./kie"
-import {VideoRequest} from "../models"
+import {videoByTaskId} from "./kie.js"
+import {VideoRequest} from "../models.js"
 
 
 
