@@ -55,8 +55,10 @@ app.post('/webhook-callback', (req, res) => {
   //   callbackType: data.callbackType
   // });
 
-  updateDataByHook(data.task_id, code )
   console.log(data.task_id, code , "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}")
+  updateDataByHook(data.task_id, code )
+  console.log(data.task_id, code , "}}}}}}}succcess}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}")
+
   // Process callback data...
   
   res.status(200).json({ status: 'received' });
