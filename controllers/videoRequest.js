@@ -10,6 +10,8 @@ import {kieGenerator} from "../utils/kie.js";
 ========================= */
 export const getUserVideoRequests=async (req, res) => {
   try {
+
+    // user id is the email of the user
     const {userId}=req.params;
 
     const requests=await VideoRequest.find({
@@ -80,7 +82,6 @@ export const generateVideo=async (req, res) => {
         message: "failed to generation",
       });
     }
-    console.log(await x)
 
     // Save request
     const request=await VideoRequest.create({
