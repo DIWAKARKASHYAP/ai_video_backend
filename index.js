@@ -47,6 +47,7 @@ app.post("/api/upload-video", upload.single("video"), uploadVideo);
 // webhook
 
 app.post('/webhook-callback', (req, res) => {
+  // console.log(req.body)
   const { code, msg, data } = req.body;
   
   // console.log('Received legitimate webhook request:', {
@@ -55,9 +56,9 @@ app.post('/webhook-callback', (req, res) => {
   //   callbackType: data.callbackType
   // });
 
-  console.log(data.task_id, code , "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}")
-  updateDataByHook(data.task_id, code )
-  console.log(data.task_id, code , "}}}}}}}succcess}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}")
+  // console.log(data.taskId, code , "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}")
+  updateDataByHook(data.taskId, code, data )
+  // console.log(data.taskId, code , "}}}}}}}succcess}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}")
 
   // Process callback data...
   

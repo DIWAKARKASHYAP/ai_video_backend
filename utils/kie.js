@@ -1,9 +1,10 @@
-let token = "Bearer 1a32b8517b2374c04df071c4c82862d4"
+let token = "Bearer 76e0251c0267cd631541c6c28c692b36"
 export const kieGenerator= async (item)=>{
   try {
     const body = {
       model: "kling-2.6/motion-control",
       callBackUrl: "https://ai-video-backend-khaki.vercel.app/webhook-callback",
+      // callBackUrl: "https://5cc4-60-254-79-129.ngrok-free.app/webhook-callback",
       input: item
     };
 
@@ -17,9 +18,13 @@ export const kieGenerator= async (item)=>{
     });
 
     const data = await response.json();
-
     if (!response.ok) {
       throw new Error(data.message || "API request failed");
+    }
+
+    if(data.code >= 400){
+      throw new Error(data.message || "API request failed");
+
     }
 
     return data;

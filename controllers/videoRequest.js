@@ -74,6 +74,7 @@ export const generateVideo=async (req, res) => {
 
     let task_id=''
     let kie_res=await kieGenerator(kie_item)
+    // console.log(kie_res)
     if (kie_res.code==200) {
       task_id=kie_res.data.taskId
     } else {
@@ -100,6 +101,7 @@ export const generateVideo=async (req, res) => {
 
   } catch (error) {
     console.error(error);
+    // console.log('workings')
     res.status(500).json({
       success: false,
       message: "Server error"
