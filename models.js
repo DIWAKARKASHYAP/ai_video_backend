@@ -123,3 +123,42 @@ videoRequestSchema.index({user_id: 1});
 videoRequestSchema.index({status: 1});
 
 export const VideoRequest=mongoose.model("VideoRequest", videoRequestSchema);
+
+
+/* ======================
+   PURCHASE SCHEMA
+====================== */
+const purchaseSchema=new mongoose.Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
+    product_id: {
+      type: String,
+      required: true
+    },
+    purchase_token: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    credits_awarded: {
+      type: Number,
+      required: true
+    },
+    order_id: {
+      type: String,
+    },
+    verified: {
+      type: Boolean,
+      default: false
+    }
+  },
+  {timestamps: true}
+);
+
+purchaseSchema.index({purchase_token: 1}, {unique: true});
+
+export const Purchase=mongoose.model("Purchase", purchaseSchema);

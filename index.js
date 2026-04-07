@@ -4,6 +4,7 @@ import connectDB from "./db.js";
 import { createUser, getUser, addCredits, removeCredits  } from "./controllers/user.js";
 import { getAllVideos, uploadVideo  } from "./controllers/video.js";
 import { getUserVideoRequests, generateVideo } from "./controllers/videoRequest.js";
+import { verifyPurchase } from "./controllers/purchase.js";
 import {updateDataByHook} from "./utils/webhook.js"
 
 import swaggerUi from "swagger-ui-express";
@@ -43,6 +44,7 @@ app.post("/api/generate-video", upload.single("image"), generateVideo);
 
 app.post("/api/upload-video", upload.single("video"), uploadVideo);
 
+app.post("/api/verify-purchase", verifyPurchase);
 
 // webhook
 
